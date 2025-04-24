@@ -1,0 +1,59 @@
+services:
+  mongodb:
+    image: mongo:6
+    container_name: mongo
+    volumes:
+      - ./data/mongo:/data/db
+    networks:
+      - graylog
+
+  opensearch:
+    image: opensearchproject/opensearch:2
+    container_name: opensearch
+    environment:
+      - discovery.type=single-node
+      - plugins.security.disabled=true
+      - bootstrap.memory_lock=true
+      - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data/opensearch:/usr/share/opensearch/data
+    networks:
+      - graylog
+
+  graylog:
+    image: graylog/graylog:5.2
+    container_name: graylog
+    depends_on:
+      - mongodb
+      - opensearch
+    entrypoint: /usr/bin/tini -- wait-for-it opensearch:9200 -- /docker-entrypoint.sh
+    environment:
+      - GRAYLOG_PASSWORD_SECRET=ajY02QJZ_1jvr?sm
+      - GRAYLOG_ROOT_PASSWORD_SHA2=d710c8f9f4a89f8e85021f64dbd423e70b1e8d0532e403c97d45609117fb0118
+      - GRAYLOG_HTTP_EXTERNAL_URI=https://logs.example.com/
+      - GRAYLOG_ELASTICSEARCH_HOSTS=http://opensearch:9200
+    volumes:
+      - ./data/graylog:/usr/share/graylog/data
+    networks:
+      - graylog
+
+  nginx:
+    image: nginx:alpine
+    container_name: graylog-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      - graylog
+    networks:
+      - graylog
+
+networks:
+  graylog:

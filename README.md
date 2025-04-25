@@ -3,6 +3,12 @@ Graylog Docker deployment with Persistent Storage and TLS
 
 After gitclone this repo 
 
+edit docker-compose.yml and change to your fqdn:
+ - GRAYLOG_HTTP_EXTERNAL_URI=https://logs.nattech.net/ #gray log url
+
+   and
+/CN=logs.nattech.net' # for the cert
+
 # Create and set permissions
 sudo mkdir -p /opt/graylog/{graylog_journal,opensearch,mongo,nginx/certs,nginx/conf.d}
 

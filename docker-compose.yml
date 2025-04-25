@@ -3,7 +3,7 @@ services:
     image: mongo:6
     container_name: mongo
     volumes:
-      - ./data/mongo:/data/db
+      - /opt/graylog/mongo:/data/db
     networks:
       - graylog
 
@@ -15,19 +15,22 @@ services:
       - plugins.security.disabled=true
       - bootstrap.memory_lock=true
       - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
-      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=admin123
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=admin123Iphohgh6Ocaav0ru
     ulimits:
       memlock:
         soft: -1
         hard: -1
     volumes:
-      - ./data/opensearch:/usr/share/opensearch/data
+      - /opt/graylog/opensearch:/usr/share/opensearch/data
     networks:
       - graylog
 
   graylog:
     image: graylog/graylog:5.2
     container_name: graylog
+    ports:
+      - "9000:9000"
+      - "514:514/udp"
     depends_on:
       - mongodb
       - opensearch
@@ -37,8 +40,6 @@ services:
       - GRAYLOG_ROOT_PASSWORD_SHA2=d710c8f9f4a89f8e85021f64dbd423e70b1e8d0532e403c97d45609117fb0118
       - GRAYLOG_HTTP_EXTERNAL_URI=https://logs.nattech.net/
       - GRAYLOG_ELASTICSEARCH_HOSTS=http://opensearch:9200
-    volumes:
-      - ./data/graylog:/usr/share/graylog/data
     networks:
       - graylog
 
@@ -49,8 +50,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./nginx/certs:/etc/nginx/certs:ro
+      - /opt/graylog/nginxconf.d:/etc/nginx/conf.d
+      - /opt/graylog/nginx/certs:/etc/nginx/certs:ro
     depends_on:
       - graylog
     networks:

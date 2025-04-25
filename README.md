@@ -5,6 +5,13 @@ After gitclone this repo
 
 usage:
 
+Create the directories :
+# Create and set permissions
+sudo mkdir -p /opt/graylog/{graylog_journal,opensearch,mongo,nginx/certs}
+sudo chown -R 1100:1100 /opt/graylog/graylog_journal
+sudo chown -R 1000:1000 /opt/graylog/opensearch
+sudo chown -R 999:999   /opt/graylog/mongo
+
 docker compose up -d
 
 

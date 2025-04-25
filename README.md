@@ -14,12 +14,11 @@ sudo chown -R 999:999   /opt/graylog/mongo
 
 # Create self signed certs or place your own in /opt/nginx/certs/
 
-openssl req -x509 -nodes -days 365 \
-            -newkey rsa:2048 \
-            -keyout /certs/graylog.key \
-            -out /certs/graylog.crt \
-            -subj '/CN=logs.nattech.net';
+Certs are auto created via certgen contrainer 
 
+# Copy Nginx config to /opt/graylog/nginx/conf.d/
+
+sudo cp nginx/conf.d/graylog.conf /opt/graylog/nginx/conf.d/
 
 # Start it all up 
 docker compose up -d

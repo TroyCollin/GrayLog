@@ -50,7 +50,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - /opt/graylog/nginxconf.d:/etc/nginx/conf.d
+      - /opt/graylog/nginx/conf.d:/etc/nginx/conf.d
       - /opt/graylog/nginx/certs:/etc/nginx/certs:ro
     depends_on:
       - graylog

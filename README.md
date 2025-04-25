@@ -4,7 +4,7 @@ Graylog Docker deployment with Persistent Storage and TLS
 After gitclone this repo 
 
 # Create and set permissions
-sudo mkdir -p /opt/graylog/{graylog_journal,opensearch,mongo,nginx/certs}
+sudo mkdir -p /opt/graylog/{graylog_journal,opensearch,mongo,nginx/certs,nginx/conf.d}
 
 sudo chown -R 1100:1100 /opt/graylog/graylog_journal
 

@@ -42,7 +42,7 @@ services:
       - GRAYLOG_ELASTICSEARCH_HOSTS=http://opensearch:9200
     networks:
       - graylog
-
+  
   nginx:
     image: nginx:alpine
     container_name: graylog-nginx
